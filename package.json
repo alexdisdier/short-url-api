@@ -1,0 +1,24 @@
+{
+  "name": "shorten-url-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Alex Disdier",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "crypto-js": "^3.1.9-1",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "mongoose": "^5.4.21",
+    "uid2": "0.0.3"
+  },
+  "heroku-run-build-script": true
+}
