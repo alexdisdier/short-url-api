@@ -2,7 +2,7 @@ mongoose = require("mongoose");
 
 const Url = mongoose.model("Url", {
   original: String,
-  shorten: String,
+  short: String,
   visits: {
     type: Number,
     default: 0

@@ -14,13 +14,11 @@ app.use(compression());
 app.use(bodyparser.json());
 app.use("/", cors());
 
-const domain = "https://short-url-alex-disdier.herokuapp.com";
-
 /////////////////////////
 // DATABASE CONNECTION //
 /////////////////////////
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/shorten-url`, {
+mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/short-url`, {
   useNewUrlParser: true
 });
 
@@ -30,7 +28,10 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/shorten-url`, {
 
 app.get("/", (req, res) => {
   res.send({
-    message: "homepage"
+    home: {
+      message: "Welcome to AD SHORT-URL API",
+      urlList: "/url"
+    }
   });
 });
 
@@ -38,16 +39,19 @@ app.get("/", (req, res) => {
 // Params body: url
 app.post("/shorten", async (req, res) => {
   try {
-    const inputUrl = req.body.url;
+    const regex = new RegExp("^(http|https)://", "i");
+    let inputUrl = req.body.url;
     const shortUrl = uid2(5);
     if (isValidURL(inputUrl)) {
+      if (!regex.test(inputUrl)) {
+        inputUrl = "https://" + inputUrl;
+      }
       const url = new Url({
         original: inputUrl,
-        shorten: `${domain}/${shortUrl}`,
+        short: shortUrl,
         visits: 0
       });
       await url.save();
-      console.log(url);
       res.json(url);
     } else {
       res.json({
@@ -75,6 +79,28 @@ app.get("/url", async (req, res) => {
     } else {
       res.json({
         message: "no urls on file"
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
+
+// READ: Redirect
+// params req.params.id of short url
+app.get("/:id", async (req, res) => {
+  console.log("test");
+  try {
+    const short = req.params.id;
+    const url = await Url.find({ short: short });
+
+    if (url) {
+      res.redirect(url[0].original);
+    } else {
+      res.json({
+        message: "not found"
       });
     }
   } catch (error) {
