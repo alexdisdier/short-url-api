@@ -2,6 +2,13 @@
 
 This is an APi for my shorten url open source web app. I built it using NodeJS.
 
+You will find two branches:
+
+- <master> using Typescript and jest (converted initial javascript project)
+- <javascript> for initial project
+
+🚧 jest testing validation errors and creating a short url.
+
 - See source code of front-end built with React - https://github.com/alexdisdier/short-url
 
 ## ✅ Functionalities
@@ -70,3 +77,4 @@ short-url-api
 - [helmet](https://www.npmjs.com/package/helmet)
 - [cors](https://www.npmjs.com/package/cors)
 - [uid2](https://www.npmjs.com/package/uid2?activeTab=versions)
+- @types/...
