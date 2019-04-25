@@ -2,12 +2,16 @@
 
 This is an APi for my shorten url open source web app. I built it using NodeJS.
 
-You will find two branches:
+You will find three branches:
 
-- <master> using Typescript and jest (converted initial javascript project)
-- <javascript> for initial project
+- **master** using Typescript and jest (converted initial javascript project)
+- **javascript** first verions of this project
+- **GraphQL** converting REST API into GraphQL
 
-🚧 jest testing validation errors and creating a short url.
+🚧 IN PROGRESS
+
+- jest testing validation errors and creating a short url.
+- converting REST API into GraphQL
 
 - See source code of front-end built with React - https://github.com/alexdisdier/short-url
 
