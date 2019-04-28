@@ -18,28 +18,10 @@ You will find three branches:
 ## ✅ Functionalities
 
 - Route to shorten url (Create)
+
   - Checking if it's a valid URL
   - Checking if it's missing http - https
   - Creating in MongoDB new URL object
-
-```javascript
-const url = new Url({
-  original: inputUrl,
-  short: shortUrl,
-  visits: 0
-});
-```
-
-- Route to get all the url (Read)
-  - Find all urls
-  - Add a count
-
-```javascript
-res.json({
-  count: count,
-  urls
-});
-```
 
 - Route to redirect the short url
   - Find the short url
@@ -60,6 +42,31 @@ short-url-api
 └── url.js
 
 ```
+
+## Running the project
+
+Clone this repository :
+
+```bash
+git clone https://github.com/alexdisdier/short-url-api.git
+
+cd shorten-url-api
+```
+
+Test different branches:
+
+```bash
+git checkout javascript
+git checkout GraphQL
+```
+
+Start the server:
+
+```bash
+npm run dev
+```
+
+Open Postman to test it out. Your data will be saved to MongoDB.
 
 ## Built With
 
