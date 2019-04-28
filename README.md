@@ -17,7 +17,7 @@ You will find three branches:
 
 ## ✅ Functionalities
 
-- Route to shorten url (Create)
+- Route to shorten url
 
   - Checking if it's a valid URL
   - Checking if it's missing http - https
@@ -26,7 +26,7 @@ You will find three branches:
 - Route to redirect the short url
   - Find the short url
   - redirect to original url
-- Route to update the number of visits to a url (Update)
+- Route to update the number of visits to a url
   - Find by id the url
   - Increment + 1 the number of visits
 
@@ -34,12 +34,17 @@ You will find three branches:
 
 ```bash
 
-short-url-api
+shorten-url-api
+├── dist
+├── src
+│   ├── test
+│   ├── server.ts
+│   └── url.ts
 ├── .gitignore
-├── package.json
 ├── README.md
-├── server.js
-└── url.js
+├── jest.config.js
+├── package.json
+└── tsconfig.json
 
 ```
 
