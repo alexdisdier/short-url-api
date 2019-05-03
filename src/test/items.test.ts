@@ -1,6 +1,6 @@
 /* Jest testing
-  $ npx jest // launch test
-  $ npx jest --watchAll // launch and watch test
+  $ npm test // launch test
+  $ npm test --watchAll // launch and watch test
   Change package.json "test" 
 */
 
