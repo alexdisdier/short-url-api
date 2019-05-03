@@ -21,7 +21,7 @@
     "@types/helmet": "0.0.43",
     "@types/jest": "^24.0.12",
     "@types/mongoose": "^5.3.26",
-    "@types/node": "^11.13.7",
+    "@types/node": "^11.13.9",
     "body-parser": "^1.18.3",
     "compression": "^1.7.4",
     "concurrently": "^4.1.0",
