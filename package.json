@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --verbose",
-    "test-watch": "jest --verbose watchAll",
+    "test-watch": "jest --verbose --watchAll",
     "start": "tsc && node dist/server.js",
     "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/server.js\""
   },
@@ -29,11 +29,14 @@
     "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
     "helmet": "^3.16.0",
-    "jest": "^24.7.1",
     "mongoose": "^5.4.21",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5",
     "uid2": "0.0.3"
   },
-  "heroku-run-build-script": true
+  "heroku-run-build-script": true,
+  "devDependencies": {
+    "@types/jest": "^24.0.12",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.5"
+  }
 }

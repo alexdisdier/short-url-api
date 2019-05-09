@@ -3,6 +3,6 @@ module.exports = {
     "^.+\\.ts$": "ts-jest"
   },
   moduleFileExtensions: ["js", "ts"],
-  testMatch: ["**/test/**/*.test.(ts|js)"],
+  testMatch: ["**/test/**/*.test.(ts)"], // add (ts|js) if you want to run on both
   testEnvironment: "node"
 };
