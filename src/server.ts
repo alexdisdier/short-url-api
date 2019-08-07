@@ -7,6 +7,8 @@ import * as helmet from "helmet";
 import * as cors from "cors";
 import * as uid2 from "uid2";
 
+const { MONGODB_URI, PORT } = process.env;
+
 const app: express.Application = express();
 
 import { default as Url } from "./url";
@@ -20,7 +22,7 @@ app.use("/", cors());
 // DATABASE CONNECTION //
 /////////////////////////
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/short-url`, {
+mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
   useNewUrlParser: true
 });
 
@@ -162,6 +164,6 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   res.json({ error: err });
 });
 
-app.listen(process.env.PORT || 3001, () => {
+app.listen(PORT || 3001, () => {
   console.log("server started");
 });
