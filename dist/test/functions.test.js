@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const functions_1 = require("../functions");
+const functions_1 = require("../src/functions");
 // toBe
 test("Adds 2 + 2 to equal 4", () => {
     expect(functions_1.default.add(2, 2)).toBe(4);
