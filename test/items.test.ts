@@ -1,9 +1,3 @@
-/* Jest testing
-  $ npm test // launch test
-  $ npm test --watchAll // launch and watch test
-  Change package.json "test" 
-*/
-
 import Items from "../src/items";
 
 describe("Items", function() {
