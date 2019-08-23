@@ -7,12 +7,11 @@ import * as helmet from "helmet";
 import * as cors from "cors";
 import * as uid2 from "uid2";
 import { ROUTE_URL, ROUTE_UPDATE } from "./constant/routes";
+import { default as Url } from "./url";
 
 const { MONGODB_URI, PORT } = process.env;
 
 const app: express.Application = express();
-
-import { default as Url } from "./url";
 
 app.use(helmet());
 app.use(compression());

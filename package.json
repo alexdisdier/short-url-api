@@ -6,9 +6,9 @@
   "scripts": {
     "test": "jest --detectOpenHandles --watchAll",
     "test-watch": "jest --verbose --watchAll",
-    "start": "tsc && node dist/server.js",
+    "start": "tsc && node dist/src/server.js",
     "start:tsc": "tsc -b ./tsconfig.build.json -w",
-    "dev": "concurrently \"tsc -b ./tsconfig.build.json -w\" -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/server.js\""
+    "dev": "concurrently \"tsc -b ./tsconfig.build.json -w\" -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/src/server.js\""
   },
   "keywords": [],
   "author": "Alex Disdier",
