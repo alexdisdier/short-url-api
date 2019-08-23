@@ -1,3 +1,5 @@
+[![Build Status](https://semaphoreci.com/api/v1/alexdisdier/short-url-api/branches/master/shields_badge.svg)](https://semaphoreci.com/alexdisdier/short-url-api)
+
 # Synopsis
 
 This is an APi for my shorten url open source web app. I built it using NodeJS.
