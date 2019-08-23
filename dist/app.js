@@ -16,8 +16,9 @@ const helmet = require("helmet");
 const cors = require("cors");
 const uid2 = require("uid2");
 const routes_1 = require("./constant/routes");
-const url_1 = require("./url");
+const { MONGODB_URI } = process.env;
 const app = express();
+const url_1 = require("./url");
 app.use(helmet());
 app.use(compression());
 app.use(bodyparser.json());
@@ -25,7 +26,7 @@ app.use("/", cors());
 /////////////////////////
 // DATABASE CONNECTION //
 /////////////////////////
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/short-url`, {
+mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
     useNewUrlParser: true
 });
 ////////////////////////
@@ -148,16 +149,4 @@ const isValidURL = (str) => {
         "(\\#[-a-z\\d_]*)?$", "i");
     return !!pattern.test(str);
 };
-//server.js
-app.all("*", (req, res) => {
-    res.status(404).send("Page not found");
-});
-app.use((err, req, res, next) => {
-    if (res.statusCode === 200)
-        res.status(400);
-    console.log(err);
-    res.json({ error: err });
-});
-app.listen(process.env.PORT || 3001, () => {
-    console.log("server started");
-});
+module.exports = app;

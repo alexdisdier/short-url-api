@@ -9,8 +9,6 @@ import * as uid2 from "uid2";
 import { ROUTE_URL, ROUTE_UPDATE } from "./constant/routes";
 import { default as Url } from "./url";
 
-const { MONGODB_URI, PORT } = process.env;
-
 const app: express.Application = express();
 
 app.use(helmet());
@@ -22,7 +20,7 @@ app.use("/", cors());
 // DATABASE CONNECTION //
 /////////////////////////
 
-mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
+mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/short-url`, {
   useNewUrlParser: true
 });
 
@@ -162,6 +160,6 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   res.json({ error: err });
 });
 
-app.listen(PORT || 3001, () => {
+app.listen(process.env.PORT || 3001, () => {
   console.log("server started");
 });
