@@ -15,6 +15,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 const cors = require("cors");
 const uid2 = require("uid2");
+const isValidURL_1 = require("./utils/isValidURL");
 const routes_1 = require("./constant/routes");
 const { MONGODB_URI } = process.env;
 const app = express();
@@ -42,12 +43,12 @@ app.get("/", (req, res) => {
 });
 // CREATE: SHORTEN URL
 // Params body: url
-app.post("/shorten", (req, res) => __awaiter(this, void 0, void 0, function* () {
+app.post(routes_1.ROUTE_SHORTEN, (req, res) => __awaiter(this, void 0, void 0, function* () {
     try {
         const regex = new RegExp("^(http|https)://", "i");
         let inputUrl = req.body.url;
         const shortUrl = uid2(5);
-        if (isValidURL(inputUrl)) {
+        if (isValidURL_1.default(inputUrl)) {
             if (!regex.test(inputUrl)) {
                 inputUrl = "https://" + inputUrl;
             }
@@ -138,15 +139,4 @@ app.post(routes_1.ROUTE_UPDATE + "/:id", (req, res) => __awaiter(this, void 0, v
         });
     }
 }));
-// Function to check if the url entered is of a conventional format
-// source: https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
-const isValidURL = (str) => {
-    const pattern = new RegExp("^(https?:\\/\\/)?" +
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-        "((\\d{1,3}\\.){3}\\d{1,3}))" +
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-        "(\\?[;&a-z\\d%_.~+=-]*)?" +
-        "(\\#[-a-z\\d_]*)?$", "i");
-    return !!pattern.test(str);
-};
 module.exports = app;
