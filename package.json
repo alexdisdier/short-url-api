@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
-    "test-watch": "jest --verbose --watchAll",
+    "test-nowatch": "jest",
+    "test:unit": "jest --verbose --watchAll",
     "start": "node dist/src/index.js",
     "build": "tsc",
     "dev": "concurrently -k -n \"Typescript,Node\" -p \"[{name}]\" -c \"blue,green\" \"tsc --watch\" \"nodemon dist/src/index.js\""
