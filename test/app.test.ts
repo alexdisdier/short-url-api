@@ -1,6 +1,9 @@
 import * as app from "../src/app";
 import * as request from "supertest";
 import * as http from "http";
+
+import * as faker from "faker";
+
 import { ROUTE_URL, ROUTE_UPDATE } from "../src/constant/routes";
 
 describe("App.ts testing", () => {
@@ -48,7 +51,7 @@ describe("App.ts testing", () => {
   /**
    * Testing get all url
    */
-  describe(`GET route ${ROUTE_URL}`, () => {
+  describe(`The route ${ROUTE_URL} displays all the urls within our database`, () => {
     it("respond with json containing a list of all urls", done => {
       request(app)
         .get(ROUTE_URL)
@@ -69,7 +72,7 @@ describe("App.ts testing", () => {
   /**
    * Testing get url redirection
    */
-  describe("GET /:id", function() {
+  describe("The route /:id redirects the short link", function() {
     it("respond with json containing a single url", function(done) {
       request(app)
         .get("/url")
