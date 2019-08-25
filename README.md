@@ -6,13 +6,13 @@ This is an APi for my shorten url open source web app. I built it using NodeJS.
 
 You will find three branches:
 
-- **master** using Typescript and jest (converted initial javascript project)
-- **javascript** first verions of this project
+- **master** using Typescript and Jest
+- **javascript** first version of this project
 - **GraphQL** converting REST API into GraphQL
 
 🚧 IN PROGRESS
 
-- jest testing validation errors and creating a short url.
+- jest testing.
 - converting REST API into GraphQL
 
 - See source code of front-end built with React - https://github.com/alexdisdier/short-url
@@ -75,7 +75,21 @@ Start the server:
 npm run dev
 ```
 
+Test the api:
+
+```bash
+npm run test:unit
+```
+
+Build the app:
+
+```bash
+npm run build
+```
+
 Open Postman to test it out. Your data will be saved to MongoDB.
+
+If you're on the graphQl branch, you can use graphiql.
 
 ## Built With
 
