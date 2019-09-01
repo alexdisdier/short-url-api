@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as graphqlHTTP from "express-graphql";
 import { Request, Response } from "express";
 import * as mongoose from "mongoose";
 import * as bodyparser from "body-parser";
@@ -10,6 +11,8 @@ import * as uid2 from "uid2";
 import isValidURL from "./utils/isValidURL";
 
 import { ROUTE_URL, ROUTE_SHORTEN, ROUTE_UPDATE } from "./constant/routes";
+
+const schema = require("./schema/schema");
 
 const { MONGODB_URI } = process.env;
 
@@ -33,6 +36,14 @@ mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
 ////////////////////////
 // ROUTES DECLARATION //
 ////////////////////////
+
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema, // or in ES6, since it's the same name, you don't need to repeat
+    graphiql: true
+  })
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.send({

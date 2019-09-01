@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
+const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
 const bodyparser = require("body-parser");
 const compression = require("compression");
@@ -17,6 +18,7 @@ const cors = require("cors");
 const uid2 = require("uid2");
 const isValidURL_1 = require("./utils/isValidURL");
 const routes_1 = require("./constant/routes");
+const schema = require("./schema/schema");
 const { MONGODB_URI } = process.env;
 const app = express();
 const url_1 = require("./url");
@@ -33,6 +35,10 @@ mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
 ////////////////////////
 // ROUTES DECLARATION //
 ////////////////////////
+app.use("/graphql", graphqlHTTP({
+    schema: schema,
+    graphiql: true
+}));
 app.get("/", (req, res) => {
     res.send({
         home: {
