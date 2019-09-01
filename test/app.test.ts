@@ -11,6 +11,16 @@ import { ROUTE_URL, ROUTE_SHORTEN } from "../src/constant/routes";
 describe("App.ts testing", () => {
   let server;
 
+  let params = {
+    body: {
+      urlWithHttp: "https://www.url.com",
+      urlWithoutHttp: "www.url.com"
+    },
+    param: {
+      id: "45JJU"
+    }
+  };
+
   beforeAll(done => {
     // do something before anything else runs
     server = http.createServer((req, res) => {
@@ -18,20 +28,18 @@ describe("App.ts testing", () => {
       res.end();
     });
     server.listen(done);
-    console.log("Jest starting!");
   });
 
   // close the server after each test
   afterAll(done => {
     server.close(done);
-    console.log("server closed!");
   });
 
   /**
    * Testing entry endpoint
    */
-  describe("Entry endpoint", () => {
-    test("Get '/'", async () => {
+  describe("GET/ Entry endpoint", () => {
+    test("welcome api", async () => {
       const response = await request(app).get("/");
 
       const home = {
@@ -48,46 +56,31 @@ describe("App.ts testing", () => {
   /**
    * Testing entry endpoint
    */
-  describe(`This route shortens a url and saves it to the database`, () => {
-    test("It creates a short url", async () => {
-      const response = await request(app).get("/shorten");
-      const url = faker.internet.url();
+  describe(`POST/ Shorten`, () => {
+    it.each([
+      [
+        "It succeeds in creating a short url and saves it to the database",
+        true,
+        null
+      ],
+      ["It fails because it's an incorrect url", false, "incorrect url"],
+      ["It fails because of a network error", false, "network error"]
+    ])("%s", async (_name, success, reason) => {
+      const newUrl = await request(app)
+        .post("/shorten")
+        .send({
+          url: params.body.urlWithHttp
+        });
 
-      // expect(response.status).toEqual(200);
-      // expect(response.body).toEqual(home);
-    });
-
-    test("It fails because it's an incorrect url", async () => {
-      const response = await request(app).get("/");
-
-      const home = {
-        home: {
-          message: "Welcome to AD SHORT-URL API",
-          urlList: ROUTE_URL
-        }
-      };
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual(home);
-    });
-
-    test("It fails because of a network error", async () => {
-      const response = await request(app).get("/");
-
-      const home = {
-        home: {
-          message: "Welcome to AD SHORT-URL API",
-          urlList: ROUTE_URL
-        }
-      };
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual(home);
+      expect(newUrl.status).toEqual(200);
+      // expect(newUrl.body).toEqual("");
     });
   });
 
   /**
    * Testing get all url
    */
-  describe(`The route ${ROUTE_URL} displays all the urls within our database`, () => {
+  describe(`GET/ Url`, () => {
     it("respond with json containing a list of all urls", done => {
       request(app)
         .get(ROUTE_URL)
@@ -100,7 +93,7 @@ describe("App.ts testing", () => {
   /**
    * Testing get url redirection
    */
-  describe("The route /:id redirects the short link", function() {
+  describe("Get/ Url with :id", function() {
     it("respond with json containing a single url", function(done) {
       request(app)
         .get("/url")

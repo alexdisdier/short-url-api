@@ -14,6 +14,15 @@ const http = require("http");
 const routes_1 = require("../src/constant/routes");
 describe("App.ts testing", () => {
     let server;
+    let params = {
+        body: {
+            urlWithHttp: "https://www.url.com",
+            urlWithoutHttp: "www.url.com"
+        },
+        param: {
+            id: "45JJU"
+        }
+    };
     beforeAll(done => {
         // do something before anything else runs
         server = http.createServer((req, res) => {
@@ -21,37 +30,53 @@ describe("App.ts testing", () => {
             res.end();
         });
         server.listen(done);
-        console.log("Jest starting!");
     });
     // close the server after each test
     afterAll(done => {
         server.close(done);
-        console.log("server closed!");
     });
-    describe("basic route tests", () => {
-        test("get home route GET /", () => __awaiter(this, void 0, void 0, function* () {
+    /**
+     * Testing entry endpoint
+     */
+    describe("GET/ Entry endpoint", () => {
+        test("welcome api", () => __awaiter(this, void 0, void 0, function* () {
             const response = yield request(app).get("/");
-            const home = '{"home":{"message":"Welcome to AD SHORT-URL API","urlList":"/url"}}';
+            const home = {
+                home: {
+                    message: "Welcome to AD SHORT-URL API",
+                    urlList: routes_1.ROUTE_URL
+                }
+            };
             expect(response.status).toEqual(200);
-            expect(response.text).toContain(home);
+            expect(response.body).toEqual(home);
         }));
     });
     /**
-     * Testing root endpoint
+     * Testing entry endpoint
      */
-    describe("GET route /", () => {
-        it("responds with a welcoming message", done => {
-            request(app)
-                .get("/")
-                .set("Accept", "application/json")
-                .expect("Content-Type", /json/)
-                .expect(200, done);
-        });
+    describe(`POST/ Shorten`, () => {
+        it.each([
+            [
+                "It succeeds in creating a short url and saves it to the database",
+                true,
+                null
+            ],
+            ["It fails because it's an incorrect url", false, "incorrect url"],
+            ["It fails because of a network error", false, "network error"]
+        ])("%s", (_name, success, reason) => __awaiter(this, void 0, void 0, function* () {
+            const newUrl = yield request(app)
+                .post("/shorten")
+                .send({
+                url: params.body.urlWithHttp
+            });
+            expect(newUrl.status).toEqual(200);
+            // expect(newUrl.body).toEqual("");
+        }));
     });
     /**
      * Testing get all url
      */
-    describe(`GET route ${routes_1.ROUTE_URL}`, () => {
+    describe(`GET/ Url`, () => {
         it("respond with json containing a list of all urls", done => {
             request(app)
                 .get(routes_1.ROUTE_URL)
@@ -59,18 +84,11 @@ describe("App.ts testing", () => {
                 .expect("Content-Type", /json/)
                 .expect(200, done);
         });
-        // it("throws if network is down", done => {
-        //   request(app)
-        //     .get(ROUTE_URL)
-        //     .set("DENY", "application/json")
-        //     .expect("Content-Type", /json/)
-        //     .expect(500, done);
-        // });
     });
     /**
      * Testing get url redirection
      */
-    describe("GET /:id", function () {
+    describe("Get/ Url with :id", function () {
         it("respond with json containing a single url", function (done) {
             request(app)
                 .get("/url")
