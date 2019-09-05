@@ -3,8 +3,8 @@ const app = require("./app");
 import { Request, Response } from "express";
 
 /*
-  SERVER
-*/
+ * SERVER
+ */
 
 app.all("*", (req: Request, res: Response) => {
   res.status(404).send("Page not found");

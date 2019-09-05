@@ -29,6 +29,7 @@
     "concurrently": "^4.1.1",
     "cors": "^2.8.5",
     "crypto-js": "^3.1.9-1",
+    "dotenv": "^8.1.0",
     "eslint": "^6.2.2",
     "eslint-plugin-jest": "^22.15.2",
     "express": "^4.16.4",

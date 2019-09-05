@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import * as mongoose from "mongoose";
 import * as express from "express";
 import * as graphqlHTTP from "express-graphql";
@@ -10,12 +12,12 @@ import * as uid2 from "uid2";
 
 import isValidURL from "./utils/isValidURL";
 
+import { UrlModel } from "./db/urls";
+
 import { ROUTE_URL, ROUTE_SHORTEN, ROUTE_UPDATE } from "./constant/routes";
 import { MONGODB_URI } from "./constant/mongodb";
 
 import { graphqlSchema } from "./schema";
-
-// const Url = require("./db/urls");
 
 // Main App
 const app: express.Application = express();
@@ -44,10 +46,6 @@ mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
 // GRAPHQL DECLARATION //
 ////////////////////////
 
-app.get("/", (req, res) => {
-  res.status(200).send("Server endpoint");
-});
-
 app.use(
   "/graphiql",
   cors(),
@@ -63,114 +61,114 @@ app.use(
   })
 );
 
-////////////////////////
-// ROUTES DECLARATION //
-////////////////////////
+/////////////////////////////////
+// REST API ROUTES DECLARATION //
+/////////////////////////////////
 
-// app.get("/", (req: Request, res: Response) => {
-//   res.send({
-//     home: {
-//       message: "Welcome to AD SHORT-URL API",
-//       urlList: ROUTE_URL
-//     }
-//   });
-// });
+app.get("/", (req: Request, res: Response) => {
+  res.send({
+    home: {
+      message: "Welcome to the SHORT-URL REST API",
+      urlList: ROUTE_URL
+    }
+  });
+});
 
 // CREATE: SHORTEN URL
 // Params body: url
-// app.post(ROUTE_SHORTEN, async (req: Request, res: Response) => {
-//   try {
-//     const regex = new RegExp("^(http|https)://", "i");
-//     let inputUrl: string = req.body.url;
-//     const shortUrl: string = uid2(5);
+app.post(ROUTE_SHORTEN, async (req: Request, res: Response) => {
+  try {
+    const regex = new RegExp("^(http|https)://", "i");
+    let inputUrl: string = req.body.url;
+    const shortUrl: string = uid2(5);
 
-//     if (isValidURL(inputUrl)) {
-//       if (!regex.test(inputUrl)) {
-//         inputUrl = "https://" + inputUrl;
-//       }
-//       const url = new Url({
-//         original: inputUrl,
-//         short: shortUrl,
-//         visits: 0
-//       });
-//       await url.save();
-//       res.json(url);
-//     } else {
-//       res.json({
-//         message: "missing or incorrect url"
-//       });
-//     }
-//   } catch (error) {
-//     res.status(400).json({
-//       message: error.message
-//     });
-//   }
-// });
+    if (isValidURL(inputUrl)) {
+      if (!regex.test(inputUrl)) {
+        inputUrl = "https://" + inputUrl;
+      }
+      const url = new UrlModel({
+        original: inputUrl,
+        short: shortUrl,
+        visits: 0
+      });
+      await url.save();
+      res.json(url);
+    } else {
+      res.json({
+        message: "missing or incorrect url"
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
 
 // READ: get all URLS
-// app.get(ROUTE_URL, async (req: Request, res: Response) => {
-//   try {
-//     const urls = await Url.find();
-//     const count = await Url.countDocuments();
+app.get(ROUTE_URL, async (req: Request, res: Response) => {
+  try {
+    const urls = await UrlModel.find();
+    const count = await UrlModel.countDocuments();
 
-//     if (count > 0) {
-//       res.json({
-//         count: count,
-//         urls
-//       });
-//     } else {
-//       res.json({
-//         message: "no urls on file"
-//       });
-//     }
-//   } catch (error) {
-//     res.status(400).json({
-//       message: error.message
-//     });
-//   }
-// });
+    if (count > 0) {
+      res.json({
+        count: count,
+        urls
+      });
+    } else {
+      res.json({
+        message: "no urls on file"
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
 
 // READ: Redirect
 // params req.params.id of short url
-// app.get("/:id", async (req: Request, res: Response) => {
-//   try {
-//     const short: string = req.params.id;
-//     const url = await Url.find({ short: short });
+app.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const short: string = req.params.id;
+    const url = await UrlModel.find({ short: short });
 
-//     if (url) {
-//       res.redirect(url[0].original);
-//     } else {
-//       res.json({
-//         message: "not found"
-//       });
-//     }
-//   } catch (error) {
-//     res.status(400).json({
-//       message: error.message
-//     });
-//   }
-// });
+    if (url) {
+      res.redirect(url[0].original);
+    } else {
+      res.json({
+        message: "not found"
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
 
 // UPDATE: increment the number of visits of a url
 // params req.params.id of url
-// app.post(ROUTE_UPDATE + "/:id", async (req: Request, res: Response) => {
-//   try {
-//     const urlId = req.params.id;
-//     const url = await Url.findById(urlId);
-//     if (url) {
-//       url.visits++;
-//       await url.save();
-//       res.json(url);
-//     } else {
-//       res.json({
-//         message: "missing or incorrect id"
-//       });
-//     }
-//   } catch (error) {
-//     res.status(400).json({
-//       message: error.message
-//     });
-//   }
-// });
+app.post(ROUTE_UPDATE + "/:id", async (req: Request, res: Response) => {
+  try {
+    const urlId = req.params.id;
+    const url = await UrlModel.findById(urlId);
+    if (url) {
+      url.visits++;
+      await url.save();
+      res.json(url);
+    } else {
+      res.json({
+        message: "missing or incorrect id"
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      message: error.message
+    });
+  }
+});
 
 module.exports = app;

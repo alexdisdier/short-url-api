@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const app = require("./app");
 /*
-  SERVER
-*/
+ * SERVER
+ */
 app.all("*", (req, res) => {
     res.status(404).send("Page not found");
 });
