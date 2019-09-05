@@ -3,8 +3,8 @@ const app = require("./app");
 import { Request, Response } from "express";
 
 /*
-  SERVER
-*/
+ * SERVER
+ */
 
 app.all("*", (req: Request, res: Response) => {
   res.status(404).send("Page not found");
@@ -17,5 +17,7 @@ app.use((err: any, req: Request, res: Response, next: any) => {
 });
 
 app.listen(process.env.PORT || 3001, () => {
-  console.log("server started");
+  console.log(
+    "server started, Express GraphQL now running on http://localhost:3001/graphiql"
+  );
 });

@@ -1,24 +1,36 @@
-import * as express from "express";
-import { Request, Response } from "express";
+require("dotenv").config();
+
 import * as mongoose from "mongoose";
+import * as express from "express";
+import * as graphqlHTTP from "express-graphql";
+import * as cors from "cors";
+import { Request, Response } from "express";
 import * as bodyparser from "body-parser";
 import * as compression from "compression";
 import * as helmet from "helmet";
-import * as cors from "cors";
 import * as uid2 from "uid2";
 
 import isValidURL from "./utils/isValidURL";
 
+import { UrlModel } from "./db/urls";
+
 import { ROUTE_URL, ROUTE_SHORTEN, ROUTE_UPDATE } from "./constant/routes";
+import { MONGODB_URI } from "./constant/mongodb";
 
-const { MONGODB_URI } = process.env;
+import { graphqlSchema } from "./schema";
 
+// Main App
 const app: express.Application = express();
-
-import { default as Url } from "./url";
 
 app.use(helmet());
 app.use(compression());
+// app.use(bodyparser.json());
+app.use(
+  bodyparser.urlencoded({
+    extended: true
+  })
+);
+// Parse application/json
 app.use(bodyparser.json());
 app.use("/", cors());
 
@@ -31,13 +43,32 @@ mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
 });
 
 ////////////////////////
-// ROUTES DECLARATION //
+// GRAPHQL DECLARATION //
 ////////////////////////
+
+app.use(
+  "/graphiql",
+  cors(),
+  graphqlHTTP(request => {
+    const startTime = Date.now();
+    return {
+      schema: graphqlSchema,
+      graphiql: true,
+      extensions({ document, variables, operationName, result }) {
+        return { runTime: Date.now() - startTime };
+      }
+    };
+  })
+);
+
+/////////////////////////////////
+// REST API ROUTES DECLARATION //
+/////////////////////////////////
 
 app.get("/", (req: Request, res: Response) => {
   res.send({
     home: {
-      message: "Welcome to AD SHORT-URL API",
+      message: "Welcome to the SHORT-URL REST API",
       urlList: ROUTE_URL
     }
   });
@@ -55,7 +86,7 @@ app.post(ROUTE_SHORTEN, async (req: Request, res: Response) => {
       if (!regex.test(inputUrl)) {
         inputUrl = "https://" + inputUrl;
       }
-      const url = new Url({
+      const url = new UrlModel({
         original: inputUrl,
         short: shortUrl,
         visits: 0
@@ -77,8 +108,8 @@ app.post(ROUTE_SHORTEN, async (req: Request, res: Response) => {
 // READ: get all URLS
 app.get(ROUTE_URL, async (req: Request, res: Response) => {
   try {
-    const urls = await Url.find();
-    const count = await Url.countDocuments();
+    const urls = await UrlModel.find();
+    const count = await UrlModel.countDocuments();
 
     if (count > 0) {
       res.json({
@@ -102,7 +133,7 @@ app.get(ROUTE_URL, async (req: Request, res: Response) => {
 app.get("/:id", async (req: Request, res: Response) => {
   try {
     const short: string = req.params.id;
-    const url = await Url.find({ short: short });
+    const url = await UrlModel.find({ short: short });
 
     if (url) {
       res.redirect(url[0].original);
@@ -123,7 +154,7 @@ app.get("/:id", async (req: Request, res: Response) => {
 app.post(ROUTE_UPDATE + "/:id", async (req: Request, res: Response) => {
   try {
     const urlId = req.params.id;
-    const url = await Url.findById(urlId);
+    const url = await UrlModel.findById(urlId);
     if (url) {
       url.visits++;
       await url.save();
