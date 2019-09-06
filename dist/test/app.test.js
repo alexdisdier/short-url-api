@@ -44,7 +44,7 @@ describe("App.ts testing", () => {
             const response = yield request(app).get("/");
             const home = {
                 home: {
-                    message: "Welcome to AD SHORT-URL API",
+                    message: "Welcome to the SHORT-URL REST API",
                     urlList: routes_1.ROUTE_URL
                 }
             };

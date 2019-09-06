@@ -1,6 +1,9 @@
+require("dotenv").config();
+import { Request, Response } from "express";
+
 const app = require("./app");
 
-import { Request, Response } from "express";
+const { PORT, PRIVATE_PORT } = process.env;
 
 /*
  * SERVER
@@ -16,8 +19,8 @@ app.use((err: any, req: Request, res: Response, next: any) => {
   res.json({ error: err });
 });
 
-app.listen(process.env.PORT || 3001, () => {
+app.listen(PORT || PRIVATE_PORT, () => {
   console.log(
-    "server started, Express GraphQL now running on http://localhost:3001/graphiql"
+    `server started, Express GraphQL now running on http://localhost:${PRIVATE_PORT}/graphiql`
   );
 });

@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv").config();
 const app = require("./app");
+const { PORT, PRIVATE_PORT } = process.env;
 /*
  * SERVER
  */
@@ -13,6 +15,6 @@ app.use((err, req, res, next) => {
     console.log(err);
     res.json({ error: err });
 });
-app.listen(process.env.PORT || 3001, () => {
-    console.log("server started, Express GraphQL now running on http://localhost:3001/graphiql");
+app.listen(PORT || PRIVATE_PORT, () => {
+    console.log(`server started, Express GraphQL now running on http://localhost:${PRIVATE_PORT}/graphiql`);
 });
