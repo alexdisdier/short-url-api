@@ -21,7 +21,7 @@ const uid2 = require("uid2");
 const isValidURL_1 = require("./utils/isValidURL");
 const urls_1 = require("./db/urls");
 const routes_1 = require("./constant/routes");
-const mongodb_1 = require("./constant/mongodb");
+const { MONGODB_DB_NAME, MONGODB_URI } = process.env;
 const schema_1 = require("./schema");
 // Main App
 const app = express();
@@ -37,7 +37,7 @@ app.use("/", cors());
 /////////////////////////
 // DATABASE CONNECTION //
 /////////////////////////
-mongoose.connect(mongodb_1.MONGODB_URI || `mongodb://localhost/short-url`, {
+mongoose.connect(MONGODB_URI || `mongodb://localhost/${MONGODB_DB_NAME}`, {
     useNewUrlParser: true
 });
 ////////////////////////

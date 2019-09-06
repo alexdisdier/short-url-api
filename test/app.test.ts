@@ -44,7 +44,7 @@ describe("App.ts testing", () => {
 
       const home = {
         home: {
-          message: "Welcome to AD SHORT-URL API",
+          message: "Welcome to the SHORT-URL REST API",
           urlList: ROUTE_URL
         }
       };

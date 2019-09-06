@@ -15,7 +15,7 @@ import isValidURL from "./utils/isValidURL";
 import { UrlModel } from "./db/urls";
 
 import { ROUTE_URL, ROUTE_SHORTEN, ROUTE_UPDATE } from "./constant/routes";
-import { MONGODB_URI } from "./constant/mongodb";
+const { MONGODB_DB_NAME, MONGODB_URI } = process.env;
 
 import { graphqlSchema } from "./schema";
 
@@ -38,7 +38,7 @@ app.use("/", cors());
 // DATABASE CONNECTION //
 /////////////////////////
 
-mongoose.connect(MONGODB_URI || `mongodb://localhost/short-url`, {
+mongoose.connect(MONGODB_URI || `mongodb://localhost/${MONGODB_DB_NAME}`, {
   useNewUrlParser: true
 });
 
