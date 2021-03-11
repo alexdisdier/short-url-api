@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UrlSchema = void 0;
 const graphql_1 = require("graphql");
 /**
  * Functions which interacts with database

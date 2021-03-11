@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.incrementUrlVisits = exports.addUrl = exports.getUrlByShortUrl = exports.getUrls = exports.UrlModel = void 0;
 const mongoose_1 = require("mongoose");
 const uid2 = require("uid2");
 const isValidURL_1 = require("../utils/isValidURL");
