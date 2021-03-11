@@ -38,7 +38,8 @@ app.use("/", cors());
 // DATABASE CONNECTION //
 /////////////////////////
 mongoose.connect(MONGODB_URI || `mongodb://localhost/${MONGODB_DB_NAME}`, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 ////////////////////////
 // GRAPHQL DECLARATION //

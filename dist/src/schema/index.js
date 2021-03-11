@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.graphqlSchema = void 0;
 const graphql_1 = require("graphql");
 // Import each models schema
 const url_1 = require("./url");
